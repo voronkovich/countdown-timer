@@ -67,17 +67,19 @@ export class CountdownTimer extends HTMLElement {
     }
 
     getUnits() {
+        // Derive prefix by removing the '-timer' suffix from the element's tag name
+        const prefix = this.tagName.toLowerCase().slice(0, -6);
+
         return {
-            years: this.querySelector('countdown-years'),
-            months: this.querySelector('countdown-months'),
-            weeks: this.querySelector('countdown-weeks'),
-            days: this.querySelector('countdown-days'),
-            hours: this.querySelector('countdown-hours'),
-            minutes: this.querySelector('countdown-minutes'),
-            seconds: this.querySelector('countdown-seconds'),
+            years: this.querySelector(`${prefix}-years`),
+            months: this.querySelector(`${prefix}-months`),
+            weeks: this.querySelector(`${prefix}-weeks`),
+            days: this.querySelector(`${prefix}-days`),
+            hours: this.querySelector(`${prefix}-hours`),
+            minutes: this.querySelector(`${prefix}-minutes`),
+            seconds: this.querySelector(`${prefix}-seconds`),
         };
     }
 }
 
 CountdownTimer.define();
-
