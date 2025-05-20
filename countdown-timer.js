@@ -34,11 +34,11 @@ class CountdownTimer extends HTMLElement {
 
     updateTimer() {
         const now = new Date().getTime();
-        const distance = this.untilDate.getTime() - now;
+        let totalMilliseconds = this.untilDate.getTime() - now;
 
-        if (distance < 0) {
+        if (totalMilliseconds < 0) {
             this.stopTimer();
-            // Optionally display "Expired" or similar
+            // Display "Expired" or similar, and set all to 0
             this.updateChild('countdown-days', '0');
             this.updateChild('countdown-hours', '0');
             this.updateChild('countdown-minutes', '0');
@@ -46,15 +46,58 @@ class CountdownTimer extends HTMLElement {
             return;
         }
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        let ms = totalMilliseconds;
 
-        this.updateChild('countdown-days', days.toString());
-        this.updateChild('countdown-hours', hours.toString());
-        this.updateChild('countdown-minutes', minutes.toString());
-        this.updateChild('countdown-seconds', seconds.toString());
+        // Calculate base values
+        let days = Math.floor(ms / (1000 * 60 * 60 * 24));
+        ms %= (1000 * 60 * 60 * 24);
+
+        let hours = Math.floor(ms / (1000 * 60 * 60));
+        ms %= (1000 * 60 * 60);
+
+        let minutes = Math.floor(ms / (1000 * 60));
+        ms %= (1000 * 60);
+
+        let seconds = Math.floor(ms / 1000);
+
+        // Get elements
+        const daysEl = this.querySelector('countdown-days');
+        const hoursEl = this.querySelector('countdown-hours');
+        const minutesEl = this.querySelector('countdown-minutes');
+        const secondsEl = this.querySelector('countdown-seconds');
+
+        // Propagate values if elements are missing
+        // Start from the largest unit that might propagate (days)
+        // and add its value to the next available smaller unit's variable.
+
+        if (!daysEl) {
+            // If days element is missing, add days (converted to hours) to hours
+            hours += days * 24;
+        }
+
+        if (!hoursEl) {
+            // If hours element is missing, add hours (converted to minutes) to minutes
+            minutes += hours * 60;
+        }
+
+        if (!minutesEl) {
+            // If minutes element is missing, add minutes (converted to seconds) to seconds
+            seconds += minutes * 60;
+        }
+
+        // Update elements that are present
+        if (daysEl) {
+            daysEl.textContent = days.toString();
+        }
+        if (hoursEl) {
+            hoursEl.textContent = hours.toString();
+        }
+        if (minutesEl) {
+            minutesEl.textContent = minutes.toString();
+        }
+        if (secondsEl) {
+            secondsEl.textContent = seconds.toString();
+        }
     }
 
     updateChild(tagName, value) {
