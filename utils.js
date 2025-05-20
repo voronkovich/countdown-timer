@@ -5,6 +5,8 @@ export function formatInterval(startDate, endDate, format) {
 
     // Approximate seconds in a year (using 365 days for simplicity)
     const secondsInYear = 60 * 60 * 24 * 365;
+    // Approximate seconds in a month (using 30 days for simplicity)
+    const secondsInMonth = 60 * 60 * 24 * 30;
     const secondsInWeek = 60 * 60 * 24 * 7;
     const secondsInDay = 60 * 60 * 24;
     const secondsInHour = 60 * 60;
@@ -15,6 +17,11 @@ export function formatInterval(startDate, endDate, format) {
     if (format.years) {
         result.years = Math.floor(remainingSeconds / secondsInYear);
         remainingSeconds %= secondsInYear;
+    }
+
+    if (format.months) {
+        result.months = Math.floor(remainingSeconds / secondsInMonth);
+        remainingSeconds %= secondsInMonth;
     }
 
     if (format.weeks) {

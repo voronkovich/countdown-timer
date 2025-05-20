@@ -62,6 +62,7 @@ describe('formatInterval', () => {
         expect(result.days).toBeUndefined();
         expect(result.seconds).toBeUndefined();
         expect(result.years).toBeUndefined();
+        expect(result.months).toBeUndefined();
     });
 
     it('should correctly calculate years only', () => {
@@ -71,12 +72,70 @@ describe('formatInterval', () => {
         const result = formatInterval(startDate, endDate, { years: true });
 
         expect(result).toEqual({ years: 2 });
+        expect(result.months).toBeUndefined();
         expect(result.weeks).toBeUndefined();
         expect(result.days).toBeUndefined();
         expect(result.hours).toBeUndefined();
         expect(result.minutes).toBeUndefined();
         expect(result.seconds).toBeUndefined();
     });
+
+    it('should correctly calculate months only (30 days per month)', () => {
+        const startDate = new Date('2023-01-01T00:00:00Z');
+        const endDate = new Date('2023-03-02T00:00:00Z');
+
+        const result = formatInterval(startDate, endDate, { months: true });
+
+        expect(result).toEqual({ months: 2 });
+        expect(result.years).toBeUndefined();
+        expect(result.weeks).toBeUndefined();
+        expect(result.days).toBeUndefined();
+        expect(result.hours).toBeUndefined();
+        expect(result.minutes).toBeUndefined();
+        expect(result.seconds).toBeUndefined();
+    });
+
+    it('should correctly calculate months and days', () => {
+        const startDate = new Date('2023-01-01T00:00:00Z');
+        const endDate = new Date('2023-03-10T00:00:00Z');
+
+        const result = formatInterval(startDate, endDate, {
+            months: true,
+            days: true,
+        });
+
+        expect(result).toEqual({
+            months: 2,
+            days: 8,
+        });
+        expect(result.years).toBeUndefined();
+        expect(result.weeks).toBeUndefined();
+        expect(result.hours).toBeUndefined();
+        expect(result.minutes).toBeUndefined();
+        expect(result.seconds).toBeUndefined();
+    });
+
+    it('should correctly calculate years, months, and days', () => {
+        const startDate = new Date('2023-01-01T00:00:00Z');
+        const endDate = new Date('2025-05-15T00:00:00Z');
+
+        const result = formatInterval(startDate, endDate, {
+            years: true,
+            months: true,
+            days: true,
+        });
+
+        expect(result).toEqual({
+            years: 2,
+            months: 4,
+            days: 15,
+        });
+        expect(result.weeks).toBeUndefined();
+        expect(result.hours).toBeUndefined();
+        expect(result.minutes).toBeUndefined();
+        expect(result.seconds).toBeUndefined();
+    });
+
 
     it('should handle start date after end date (absolute difference)', () => {
         const startDate = new Date('2023-01-02T00:00:00Z');
