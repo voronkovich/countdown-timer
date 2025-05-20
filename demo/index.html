@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer Example</title>
+</head>
+<body>
+    <h1>Countdown Timer Example</h1>
+
+    <countdown-timer until="2100-12-31T23:59:59">
+        <p>Time until the end of 2100:</p>
+        <div>
+            <span id="weeks"><countdown-weeks></countdown-weeks></span> weeks
+            <span id="days"><countdown-days></countdown-days></span> days
+            <span id="hours"><countdown-hours></countdown-hours></span> hours
+            <span id="minutes"><countdown-minutes></countdown-minutes></span> minutes
+            <span id="seconds"><countdown-seconds></countdown-seconds></span> seconds
+        </div>
+    </countdown-timer>
+
+    <script src="../build/bundle.min.js"></script>
+</body>
+</html>
