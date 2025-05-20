@@ -37,16 +37,13 @@ class CountdownTimer extends HTMLElement {
         let totalMilliseconds = this.untilDate.getTime() - now;
         let totalSeconds = Math.floor(totalMilliseconds / 1000); // Work with seconds
 
-        // Determine the required format based on child elements
-        const format = {
+        const timeRemaining = formatInterval(totalSeconds, {
             weeks: !!this.querySelector('countdown-weeks'),
             days: !!this.querySelector('countdown-days'),
             hours: !!this.querySelector('countdown-hours'),
             minutes: !!this.querySelector('countdown-minutes'),
             seconds: !!this.querySelector('countdown-seconds')
-        };
-
-        const timeRemaining = formatInterval(totalSeconds, format);
+        });
 
         // Update elements that are present
         this.updateChild('countdown-weeks', timeRemaining.weeks?.toString());
