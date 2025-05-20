@@ -38,9 +38,10 @@ describe('CountdownTimer', () => {
     };
 
     test('should render and display initial countdown with all tags', () => {
-        // 2 days, 3 hours, 4 minutes, 5 seconds
-        const futureDate = new Date(Date.now() + 1000 * (60 * 60 * 24 * 2 + 60 * 60 * 3 + 60 * 4 + 5));
+        // 1 week, 2 days, 3 hours, 4 minutes, 5 seconds
+        const futureDate = new Date(Date.now() + 1000 * (60 * 60 * 24 * 7 * 1 + 60 * 60 * 24 * 2 + 60 * 60 * 3 + 60 * 4 + 5));
         const component = createComponent(futureDate.toISOString(), `
+            <countdown-weeks></countdown-weeks>
             <countdown-days></countdown-days>
             <countdown-hours></countdown-hours>
             <countdown-minutes></countdown-minutes>
@@ -49,6 +50,7 @@ describe('CountdownTimer', () => {
 
         jest.advanceTimersByTime(0);
 
+        expect(component.querySelector('countdown-weeks').textContent).toBe('1');
         expect(component.querySelector('countdown-days').textContent).toBe('2');
         expect(component.querySelector('countdown-hours').textContent).toBe('3');
         expect(component.querySelector('countdown-minutes').textContent).toBe('4');

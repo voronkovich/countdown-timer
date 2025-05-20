@@ -39,6 +39,7 @@ class CountdownTimer extends HTMLElement {
 
         // Determine the required format based on child elements
         const format = {
+            weeks: !!this.querySelector('countdown-weeks'),
             days: !!this.querySelector('countdown-days'),
             hours: !!this.querySelector('countdown-hours'),
             minutes: !!this.querySelector('countdown-minutes'),
@@ -48,6 +49,7 @@ class CountdownTimer extends HTMLElement {
         const timeRemaining = formatInterval(totalSeconds, format);
 
         // Update elements that are present
+        this.updateChild('countdown-weeks', timeRemaining.weeks?.toString());
         this.updateChild('countdown-days', timeRemaining.days?.toString());
         this.updateChild('countdown-hours', timeRemaining.hours?.toString());
         this.updateChild('countdown-minutes', timeRemaining.minutes?.toString());
@@ -75,9 +77,15 @@ function formatInterval(totalSeconds, format) {
     let remainingSeconds = totalSeconds;
     const result = {};
 
+    const secondsInWeek = 60 * 60 * 24 * 7;
     const secondsInDay = 60 * 60 * 24;
     const secondsInHour = 60 * 60;
     const secondsInMinute = 60;
+
+    if (format.weeks) {
+        result.weeks = Math.floor(remainingSeconds / secondsInWeek);
+        remainingSeconds %= secondsInWeek;
+    }
 
     if (format.days) {
         result.days = Math.floor(remainingSeconds / secondsInDay);
