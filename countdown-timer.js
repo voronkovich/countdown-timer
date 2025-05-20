@@ -22,8 +22,8 @@ export class CountdownTimer extends HTMLElement {
     }
 
     startTimer() {
-        this.updateTimer(); // Initial update
-        this.stopTimer(); // Clear any existing interval
+        this.updateTimer();
+        this.stopTimer();
         this.timerInterval = setInterval(() => this.updateTimer(), 1000);
     }
 
