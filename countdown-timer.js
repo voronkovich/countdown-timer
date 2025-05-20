@@ -23,7 +23,7 @@ export class CountdownTimer extends HTMLElement {
             this.#untilDate = new Date(until);
             this.#startTimer();
         } else {
-            console.error('countdown-timer requires an "until" attribute.');
+            console.error(`${this.tagName.toLowerCase()} requires an "until" attribute.`);
         }
     }
 
