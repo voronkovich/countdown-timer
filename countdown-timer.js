@@ -35,68 +35,27 @@ class CountdownTimer extends HTMLElement {
     updateTimer() {
         const now = new Date().getTime();
         let totalMilliseconds = this.untilDate.getTime() - now;
+        let totalSeconds = Math.floor(totalMilliseconds / 1000); // Work with seconds
 
-        if (totalMilliseconds < 0) {
-            this.stopTimer();
-            // Display "Expired" or similar, and set all to 0
-            this.updateChild('countdown-days', '0');
-            this.updateChild('countdown-hours', '0');
-            this.updateChild('countdown-minutes', '0');
-            this.updateChild('countdown-seconds', '0');
-            return;
-        }
+        // Determine the required format based on child elements
+        const format = {
+            days: !!this.querySelector('countdown-days'),
+            hours: !!this.querySelector('countdown-hours'),
+            minutes: !!this.querySelector('countdown-minutes'),
+            seconds: !!this.querySelector('countdown-seconds')
+        };
 
-        let ms = totalMilliseconds;
-
-        // Calculate base values
-        let days = Math.floor(ms / (1000 * 60 * 60 * 24));
-        ms %= (1000 * 60 * 60 * 24);
-
-        let hours = Math.floor(ms / (1000 * 60 * 60));
-        ms %= (1000 * 60 * 60);
-
-        let minutes = Math.floor(ms / (1000 * 60));
-        ms %= (1000 * 60);
-
-        let seconds = Math.floor(ms / 1000);
-
-        // Get elements
-        const daysEl = this.querySelector('countdown-days');
-        const hoursEl = this.querySelector('countdown-hours');
-        const minutesEl = this.querySelector('countdown-minutes');
-        const secondsEl = this.querySelector('countdown-seconds');
-
-        // Propagate values if elements are missing
-        // Start from the largest unit that might propagate (days)
-        // and add its value to the next available smaller unit's variable.
-
-        if (!daysEl) {
-            // If days element is missing, add days (converted to hours) to hours
-            hours += days * 24;
-        }
-
-        if (!hoursEl) {
-            // If hours element is missing, add hours (converted to minutes) to minutes
-            minutes += hours * 60;
-        }
-
-        if (!minutesEl) {
-            // If minutes element is missing, add minutes (converted to seconds) to seconds
-            seconds += minutes * 60;
-        }
+        const timeRemaining = formatInterval(totalSeconds, format);
 
         // Update elements that are present
-        if (daysEl) {
-            daysEl.textContent = days.toString();
-        }
-        if (hoursEl) {
-            hoursEl.textContent = hours.toString();
-        }
-        if (minutesEl) {
-            minutesEl.textContent = minutes.toString();
-        }
-        if (secondsEl) {
-            secondsEl.textContent = seconds.toString();
+        this.updateChild('countdown-days', timeRemaining.days?.toString());
+        this.updateChild('countdown-hours', timeRemaining.hours?.toString());
+        this.updateChild('countdown-minutes', timeRemaining.minutes?.toString());
+        this.updateChild('countdown-seconds', timeRemaining.seconds?.toString());
+
+        // Stop timer if time is up (totalMilliseconds was originally < 0)
+        if (totalMilliseconds < 0) {
+            this.stopTimer();
         }
     }
 
@@ -106,6 +65,40 @@ class CountdownTimer extends HTMLElement {
             child.textContent = value;
         }
     }
+}
+
+function formatInterval(totalSeconds, format) {
+    if (totalSeconds < 0) {
+        totalSeconds = 0;
+    }
+
+    let remainingSeconds = totalSeconds;
+    const result = {};
+
+    const secondsInDay = 60 * 60 * 24;
+    const secondsInHour = 60 * 60;
+    const secondsInMinute = 60;
+
+    if (format.days) {
+        result.days = Math.floor(remainingSeconds / secondsInDay);
+        remainingSeconds %= secondsInDay;
+    }
+
+    if (format.hours) {
+        result.hours = Math.floor(remainingSeconds / secondsInHour);
+        remainingSeconds %= secondsInHour;
+    }
+
+    if (format.minutes) {
+        result.minutes = Math.floor(remainingSeconds / secondsInMinute);
+        remainingSeconds %= secondsInMinute;
+    }
+
+    if (format.seconds) {
+        result.seconds = remainingSeconds;
+    }
+
+    return result;
 }
 
 customElements.define('countdown-timer', CountdownTimer);
