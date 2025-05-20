@@ -1,4 +1,4 @@
-import { formatInterval } from './utils';
+import { formatInterval } from '../utils.js';
 
 describe('formatInterval', () => {
     it('should return zero for all units when start and end dates are the same', () => {

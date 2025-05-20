@@ -1,9 +1,10 @@
-import './countdown-timer.js';
+import CountdownTimer from '../countdown-timer.js';
 import { install } from "@sinonjs/fake-timers";
 
 describe('CountdownTimer', () => {
     let container;
     const clock = install();
+    CountdownTimer.define();
 
     beforeEach(() => {
         // Set up a DOM element as a render target

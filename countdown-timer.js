@@ -1,6 +1,6 @@
 import { formatInterval } from './utils.js';
 
-export class CountdownTimer extends HTMLElement {
+export default class CountdownTimer extends HTMLElement {
     static define(prefix = 'countdown') {
         const tagName = `${prefix}-timer`;
         customElements.define(tagName, this);
@@ -83,5 +83,3 @@ export class CountdownTimer extends HTMLElement {
         };
     }
 }
-
-CountdownTimer.define();
