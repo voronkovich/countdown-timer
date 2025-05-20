@@ -41,6 +41,7 @@ export class CountdownTimer extends HTMLElement {
 
     updateTimer() {
         const now = new Date();
+        const units = this.getUnits();
 
         let timeRemaining = {
             years: 0,
@@ -55,31 +56,26 @@ export class CountdownTimer extends HTMLElement {
         if (now >= this.untilDate) {
             this.stopTimer();
         } else {
-            timeRemaining = formatInterval(now, this.untilDate, {
-                years: !!this.querySelector('countdown-years'),
-                months: !!this.querySelector('countdown-months'),
-                weeks: !!this.querySelector('countdown-weeks'),
-                days: !!this.querySelector('countdown-days'),
-                hours: !!this.querySelector('countdown-hours'),
-                minutes: !!this.querySelector('countdown-minutes'),
-                seconds: !!this.querySelector('countdown-seconds')
-            });
+            timeRemaining = formatInterval(now, this.untilDate, units);
         }
 
-        this.updateChild('countdown-years', timeRemaining.years?.toString());
-        this.updateChild('countdown-months', timeRemaining.months?.toString());
-        this.updateChild('countdown-weeks', timeRemaining.weeks?.toString());
-        this.updateChild('countdown-days', timeRemaining.days?.toString());
-        this.updateChild('countdown-hours', timeRemaining.hours?.toString());
-        this.updateChild('countdown-minutes', timeRemaining.minutes?.toString());
-        this.updateChild('countdown-seconds', timeRemaining.seconds?.toString());
+        for (const unit of Object.keys(units)) {
+            if (units[unit]) {
+                units[unit].textContent = timeRemaining[unit].toString();
+            }
+        }
     }
 
-    updateChild(tagName, value) {
-        const child = this.querySelector(tagName);
-        if (child) {
-            child.textContent = value;
-        }
+    getUnits() {
+        return {
+            years: this.querySelector('countdown-years'),
+            months: this.querySelector('countdown-months'),
+            weeks: this.querySelector('countdown-weeks'),
+            days: this.querySelector('countdown-days'),
+            hours: this.querySelector('countdown-hours'),
+            minutes: this.querySelector('countdown-minutes'),
+            seconds: this.querySelector('countdown-seconds'),
+        };
     }
 }
 
