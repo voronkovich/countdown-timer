@@ -4,7 +4,8 @@
     "description": "A simple web component for a countdown timer",
     "main": "countdown-timer.js",
     "scripts": {
-        "test": "bun test"
+        "test": "bun test",
+        "build": "bun build --outfile=build/bundle.min.js --target=browser --format=iife --minify countdown-timer.js"
     },
     "keywords": [
         "web-component",
