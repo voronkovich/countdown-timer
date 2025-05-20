@@ -50,3 +50,16 @@ export function formatInterval(startDate, endDate, format) {
 
     return result;
 }
+
+export function parseDate(dateStr) {
+    if (!dateStr) {
+        return null;
+    }
+
+    const date = new Date(dateStr);
+    if (!isNaN(date.getTime())) {
+        return date;
+    }
+
+    return null;
+}

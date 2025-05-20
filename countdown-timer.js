@@ -1,4 +1,4 @@
-import { formatInterval } from './utils.js';
+import { formatInterval, parseDate } from './utils.js';
 
 export default class CountdownTimer extends HTMLElement {
     static define(prefix = 'countdown') {
@@ -17,13 +17,16 @@ export default class CountdownTimer extends HTMLElement {
         this.#prefix = this.tagName.toLowerCase().slice(0, -6);
     }
 
+    getUntilDate() {
+        return parseDate(this.getAttribute('until'));
+    }
+
     connectedCallback() {
-        const until = this.getAttribute('until');
-        if (until) {
-            this.#untilDate = new Date(until);
+        this.#untilDate = this.getUntilDate();
+        if (this.#untilDate) {
             this.#startTimer();
         } else {
-            console.error(`${this.tagName.toLowerCase()} requires an "until" attribute.`);
+            console.error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
         }
     }
 

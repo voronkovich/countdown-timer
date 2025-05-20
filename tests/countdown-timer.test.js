@@ -139,7 +139,7 @@ describe('CountdownTimer', () => {
         const element = document.createElement('countdown-timer');
         container.appendChild(element); // Triggers connectedCallback
 
-        expect(consoleSpy).toHaveBeenCalledWith('countdown-timer requires an "until" attribute.');
+        expect(consoleSpy).toHaveBeenCalledWith('countdown-timer requires a valid "until" attribute.');
 
         consoleSpy.mockRestore();
     });
