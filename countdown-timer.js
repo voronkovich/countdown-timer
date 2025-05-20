@@ -33,29 +33,33 @@ class CountdownTimer extends HTMLElement {
     }
 
     updateTimer() {
-        const now = new Date().getTime();
-        let totalMilliseconds = this.untilDate.getTime() - now;
-        let totalSeconds = Math.floor(totalMilliseconds / 1000); // Work with seconds
+        const now = new Date();
 
-        const timeRemaining = formatInterval(totalSeconds, {
-            weeks: !!this.querySelector('countdown-weeks'),
-            days: !!this.querySelector('countdown-days'),
-            hours: !!this.querySelector('countdown-hours'),
-            minutes: !!this.querySelector('countdown-minutes'),
-            seconds: !!this.querySelector('countdown-seconds')
-        });
+        let timeRemaining = {
+            weeks: 0,
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
+        };
 
-        // Update elements that are present
+        if (now >= this.untilDate) {
+            this.stopTimer();
+        } else {
+            timeRemaining = formatInterval(now, this.untilDate, {
+                weeks: !!this.querySelector('countdown-weeks'),
+                days: !!this.querySelector('countdown-days'),
+                hours: !!this.querySelector('countdown-hours'),
+                minutes: !!this.querySelector('countdown-minutes'),
+                seconds: !!this.querySelector('countdown-seconds')
+            });
+        }
+
         this.updateChild('countdown-weeks', timeRemaining.weeks?.toString());
         this.updateChild('countdown-days', timeRemaining.days?.toString());
         this.updateChild('countdown-hours', timeRemaining.hours?.toString());
         this.updateChild('countdown-minutes', timeRemaining.minutes?.toString());
         this.updateChild('countdown-seconds', timeRemaining.seconds?.toString());
-
-        // Stop timer if time is up (totalMilliseconds was originally < 0)
-        if (totalMilliseconds < 0) {
-            this.stopTimer();
-        }
     }
 
     updateChild(tagName, value) {
@@ -66,18 +70,17 @@ class CountdownTimer extends HTMLElement {
     }
 }
 
-function formatInterval(totalSeconds, format) {
-    if (totalSeconds < 0) {
-        totalSeconds = 0;
-    }
-
-    let remainingSeconds = totalSeconds;
+function formatInterval(startDate, endDate, format) {
     const result = {};
+
+    const totalMilliseconds = Math.abs(endDate.getTime() - startDate.getTime());
 
     const secondsInWeek = 60 * 60 * 24 * 7;
     const secondsInDay = 60 * 60 * 24;
     const secondsInHour = 60 * 60;
     const secondsInMinute = 60;
+
+    let remainingSeconds = Math.floor(totalMilliseconds / 1000);
 
     if (format.weeks) {
         result.weeks = Math.floor(remainingSeconds / secondsInWeek);
