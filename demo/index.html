@@ -4,23 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown Timer Example</title>
+    <script src="../build/bundle.min.js" async></script>
+    <script src="./tailwind-4.1.7.min.js" async></script>
 </head>
-<body>
-    <h1>Countdown Timer Example</h1>
+<body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 font-sans p-4">
+        <h1 class="text-5xl mb-15">Until 2050</h1>
 
-    <countdown-timer until="2050-12-31T23:59:59">
-        <p>Time until the end of 2050:</p>
-        <div>
-            <countdown-years></countdown-years> years
-            <countdown-months></countdown-months> months
-            <countdown-weeks></countdown-weeks> weeks
-            <countdown-days></countdown-days> days
-            <countdown-hours></countdown-hours> hours
-            <countdown-minutes></countdown-minutes> minutes
-            <countdown-seconds></countdown-seconds> seconds
-        </div>
-    </countdown-timer>
-
-    <script src="../build/bundle.min.js"></script>
-</body>
+        <countdown-timer until="2050-01-01" class="flex items-start justify-center w-full gap-4 count-down-main">
+            <div class="w-24">
+                <countdown-years class="block font-manrope font-semibold text-6xl text-indigo-600 text-center"></countdown-years>
+                <p class="font-normal text-gray-900 mt-1 text-center w-full">years</p>
+            </div>
+            <span class="font-manrope font-semibold text-5xl text-gray-900">:</span>
+            <div class="w-24">
+                <countdown-months class="block font-manrope font-semibold text-6xl text-indigo-600 text-center"></countdown-months>
+                <p class="font-normal text-gray-900 mt-1 text-center w-full">months</p>
+            </div>
+            <span class="font-manrope font-semibold text-5xl text-gray-900">:</span>
+            <div class="w-24">
+                <countdown-days class="block font-manrope font-semibold text-6xl text-indigo-600 text-center"></countdown-days>
+                <p class="font-normal text-gray-900 mt-1 text-center w-full">days</p>
+            </div>
+            <span class="font-manrope font-semibold text-5xl text-gray-900">:</span>
+            <div class="w-24">
+                <countdown-hours class="block font-manrope font-semibold text-6xl text-indigo-600 text-center"></countdown-hours>
+                <p class="font-normal text-gray-900 mt-1 text-center w-full">hours</p>
+            </div>
+            <span class="font-manrope font-semibold text-5xl text-gray-900">:</span>
+            <div class="w-24">
+                <countdown-minutes class="block font-manrope font-semibold text-6xl text-indigo-600 text-center"></countdown-minutes>
+                <p class="font-normal text-gray-900 mt-1 text-center w-full">minutes</p>
+            </div>
+            <span class="font-manrope font-semibold text-5xl text-gray-900">:</span>
+            <div class="w-24">
+                <countdown-seconds class="block font-manrope font-semibold text-6xl text-indigo-600 text-center"></countdown-seconds>
+                <p class="font-normal text-gray-900 mt-1 text-center w-full">seconds</p>
+            </div>
+        </countdown-timer>
+    </body>
 </html>
