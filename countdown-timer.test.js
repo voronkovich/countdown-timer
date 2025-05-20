@@ -1,31 +1,30 @@
-// Import the web component
-require('./countdown-timer.js');
+import './countdown-timer.js';
+import { install } from "@sinonjs/fake-timers";
 
 describe('CountdownTimer', () => {
     let container;
+    const clock = install();
 
     beforeEach(() => {
         // Set up a DOM element as a render target
         container = document.createElement('div');
         document.body.appendChild(container);
 
-        // Use fake timers to control setInterval
-        jest.useFakeTimers();
-
-        // Spy on the mocked clearInterval provided by fake timers
         jest.spyOn(global, 'clearInterval');
+
+        clock.reset();
     });
 
     afterEach(() => {
-        // Restore the spy
-        jest.restoreAllMocks();
-
         // Clean up DOM
         document.body.removeChild(container);
         container = null;
 
-        // Restore real timers
-        jest.useRealTimers();
+        jest.restoreAllMocks();
+    });
+
+    afterAll(() => {
+        clock.uninstall();
     });
 
     // Helper function to create and append the component
@@ -48,7 +47,7 @@ describe('CountdownTimer', () => {
             <countdown-seconds></countdown-seconds>
         `);
 
-        jest.advanceTimersByTime(0);
+        clock.tick(0);
 
         expect(component.querySelector('countdown-weeks').textContent).toBe('1');
         expect(component.querySelector('countdown-days').textContent).toBe('2');
@@ -65,7 +64,7 @@ describe('CountdownTimer', () => {
             <countdown-seconds></countdown-seconds>
         `);
 
-        jest.advanceTimersByTime(0);
+        clock.tick(0);
 
         // Expect days and hours to be added to minutes
         // 2 days + 3 hours + 4 minutes
@@ -82,15 +81,15 @@ describe('CountdownTimer', () => {
         `);
 
         // Initial state
-        jest.advanceTimersByTime(0);
+        clock.tick(0);
         expect(component.querySelector('countdown-seconds').textContent).toBe('3');
 
         // After 1 second
-        jest.advanceTimersByTime(1000);
+        clock.tick(1000);
         expect(component.querySelector('countdown-seconds').textContent).toBe('2');
 
         // After another second
-        jest.advanceTimersByTime(1000);
+        clock.tick(1000);
         expect(component.querySelector('countdown-seconds').textContent).toBe('1');
     });
 
@@ -104,7 +103,7 @@ describe('CountdownTimer', () => {
             <countdown-seconds></countdown-seconds>
         `);
 
-        jest.advanceTimersByTime(0);
+        clock.tick(0);
 
         expect(component.querySelector('countdown-days').textContent).toBe('0');
         expect(component.querySelector('countdown-hours').textContent).toBe('0');
@@ -120,14 +119,14 @@ describe('CountdownTimer', () => {
         `);
 
         // Advance timers to start the interval
-        jest.advanceTimersByTime(1000);
+        clock.tick(1000);
         expect(component.querySelector('countdown-seconds').textContent).toBe('4');
 
         // Disconnect the element
         component.remove();
 
         // Advance timers further - the value should not change
-        jest.advanceTimersByTime(2000);
+        clock.tick(2000);
         expect(component.querySelector('countdown-seconds').textContent).toBe('4');
 
         // Check that clearInterval was called
