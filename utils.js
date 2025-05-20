@@ -3,12 +3,19 @@ export function formatInterval(startDate, endDate, format) {
 
     const totalMilliseconds = Math.abs(endDate.getTime() - startDate.getTime());
 
+    // Approximate seconds in a year (using 365 days for simplicity)
+    const secondsInYear = 60 * 60 * 24 * 365;
     const secondsInWeek = 60 * 60 * 24 * 7;
     const secondsInDay = 60 * 60 * 24;
     const secondsInHour = 60 * 60;
     const secondsInMinute = 60;
 
     let remainingSeconds = Math.floor(totalMilliseconds / 1000);
+
+    if (format.years) {
+        result.years = Math.floor(remainingSeconds / secondsInYear);
+        remainingSeconds %= secondsInYear;
+    }
 
     if (format.weeks) {
         result.weeks = Math.floor(remainingSeconds / secondsInWeek);

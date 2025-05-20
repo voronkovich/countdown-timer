@@ -24,9 +24,10 @@ describe('formatInterval', () => {
 
     it('should correctly format a time interval with all units', () => {
         const startDate = new Date('2023-01-01T00:00:00Z');
-        const endDate = new Date('2023-01-10T15:30:45Z');
+        const endDate = new Date('2025-03-10T15:30:45Z');
 
         const result = formatInterval(startDate, endDate, {
+            years: true,
             weeks: true,
             days: true,
             hours: true,
@@ -35,8 +36,9 @@ describe('formatInterval', () => {
         });
 
         expect(result).toEqual({
-            weeks: 1,
-            days: 2,
+            years: 2,
+            weeks: 9,
+            days: 6,
             hours: 15,
             minutes: 30,
             seconds: 45,
@@ -58,6 +60,21 @@ describe('formatInterval', () => {
         });
         expect(result.weeks).toBeUndefined();
         expect(result.days).toBeUndefined();
+        expect(result.seconds).toBeUndefined();
+        expect(result.years).toBeUndefined();
+    });
+
+    it('should correctly calculate years only', () => {
+        const startDate = new Date('2023-01-01T00:00:00Z');
+        const endDate = new Date('2025-01-01T00:00:00Z'); // Exactly 2 years
+
+        const result = formatInterval(startDate, endDate, { years: true });
+
+        expect(result).toEqual({ years: 2 });
+        expect(result.weeks).toBeUndefined();
+        expect(result.days).toBeUndefined();
+        expect(result.hours).toBeUndefined();
+        expect(result.minutes).toBeUndefined();
         expect(result.seconds).toBeUndefined();
     });
 

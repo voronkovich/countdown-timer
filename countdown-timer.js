@@ -38,6 +38,7 @@ export class CountdownTimer extends HTMLElement {
         const now = new Date();
 
         let timeRemaining = {
+            years: 0,
             weeks: 0,
             days: 0,
             hours: 0,
@@ -49,6 +50,7 @@ export class CountdownTimer extends HTMLElement {
             this.stopTimer();
         } else {
             timeRemaining = formatInterval(now, this.untilDate, {
+                years: !!this.querySelector('countdown-years'),
                 weeks: !!this.querySelector('countdown-weeks'),
                 days: !!this.querySelector('countdown-days'),
                 hours: !!this.querySelector('countdown-hours'),
@@ -57,6 +59,7 @@ export class CountdownTimer extends HTMLElement {
             });
         }
 
+        this.updateChild('countdown-years', timeRemaining.years?.toString());
         this.updateChild('countdown-weeks', timeRemaining.weeks?.toString());
         this.updateChild('countdown-days', timeRemaining.days?.toString());
         this.updateChild('countdown-hours', timeRemaining.hours?.toString());
