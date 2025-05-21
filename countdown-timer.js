@@ -11,7 +11,7 @@ export default class CountdownTimer extends HTMLElement {
     }
 
     #prefix = 'countdown';
-    #untilDate = null;
+    #until = null;
     #timerInterval = null;
 
     constructor() {
@@ -22,7 +22,7 @@ export default class CountdownTimer extends HTMLElement {
     }
 
     connectedCallback() {
-        if (!this.#untilDate) {
+        if (!this.#until) {
             throw new Error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
         }
 
@@ -36,9 +36,9 @@ export default class CountdownTimer extends HTMLElement {
 
     attributeChangedCallback(name, oldValue, newValue) {
         if (name === 'until') {
-            this.#untilDate = parseDate(newValue);
+            this.#until = parseDate(newValue);
 
-            if (this.#untilDate) {
+            if (this.#until) {
                 this.#updateTimer();
                 this.#startTimer();
             } else {
@@ -75,10 +75,10 @@ export default class CountdownTimer extends HTMLElement {
             seconds: 0,
         };
 
-        if (now >= this.#untilDate) {
+        if (now >= this.#until) {
             this.#stopTimer();
         } else {
-            timeRemaining = formatInterval(now, this.#untilDate, units);
+            timeRemaining = formatInterval(now, this.#until, units);
         }
 
         for (const unit of Object.keys(units)) {
