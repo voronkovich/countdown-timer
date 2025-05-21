@@ -4,7 +4,7 @@ This project provides a simple custom HTML element `<countdown-timer>` that disp
 
 ## Installation
 
-Download the minified script from [dist/countdown.min.js](dist/countdown.min.js) and include it in your HTML file:
+Download the minified script from [dist/countdown.min.js](https://raw.githubusercontent.com/voronkovich/countdown-timer/refs/heads/main/dist/countdown.min.js) and include it in your HTML file:
 
 ```html
 <script src="path/to/your/dist/countdown.min.js" async></script>
