@@ -166,4 +166,20 @@ describe('CountdownTimer', () => {
         clock.tick(1000);
         expect(component.querySelector('countdown-seconds').textContent).toBe('9');
     });
+
+    test('should pad zeros when pad-zeros attribute is present', () => {
+        const futureDate = new Date(Date.now() + 5000);
+        const component = createComponent(futureDate.toISOString(), `
+            <countdown-seconds pad-zeros="2"></countdown-seconds>
+        `);
+
+        clock.tick(0);
+
+        // At 5 seconds
+        expect(component.querySelector('countdown-seconds').textContent).toBe('05');
+
+        // Advance 1 second
+        clock.tick(1000);
+        expect(component.querySelector('countdown-seconds').textContent).toBe('04');
+    });
 });
