@@ -10,8 +10,8 @@ export default class CountdownTimer extends HTMLElement {
         return ['until'];
     }
 
-    #untilDate = null;
     #prefix = 'countdown';
+    #untilDate = null;
     #timerInterval = null;
 
     constructor() {
