@@ -3,15 +3,12 @@ import { formatInterval, parseDate } from './utils.js';
 export default class CountdownTimer extends HTMLElement {
     #prefix = 'countdown';
     #until = null;
+    #units = null;
     #timerInterval = null;
 
     static define(prefix = 'countdown') {
         const tagName = `${prefix}-timer`;
         customElements.define(tagName, this);
-    }
-
-    static get observedAttributes() {
-        return ['until'];
     }
 
     constructor() {
@@ -23,7 +20,25 @@ export default class CountdownTimer extends HTMLElement {
 
     connectedCallback() {
         if (!this.#until) {
-            throw new Error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
+            this.#until = parseDate(this.getAttribute('until'));
+
+            if (!this.#until) {
+                throw new Error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
+            }
+        }
+
+        if (!this.#units) {
+            this.#units = Object.create(null);
+
+            for (const unit of ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds']) {
+                const el = this.querySelector(`${this.#prefix}-${unit}`);
+                if (el) {
+                    this.#units[unit] = {
+                        el: el,
+                        padZeros: +el.getAttribute('pad-zeros'),
+                    };
+                }
+            }
         }
 
         this.#update();
@@ -32,20 +47,6 @@ export default class CountdownTimer extends HTMLElement {
 
     disconnectedCallback() {
         this.#stopTimer();
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-        if (name === 'until') {
-            this.#until = parseDate(newValue);
-
-            if (this.#until) {
-                this.#update();
-                this.#startTimer();
-            } else {
-                this.#stopTimer();
-                throw new Error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
-            }
-        }
     }
 
     #startTimer() {
@@ -63,7 +64,6 @@ export default class CountdownTimer extends HTMLElement {
 
     #update() {
         const now = new Date();
-        const units = this.#getUnits();
 
         let timeRemaining = {
             years: 0,
@@ -78,35 +78,21 @@ export default class CountdownTimer extends HTMLElement {
         if (now >= this.#until) {
             this.#finish();
         } else {
-            timeRemaining = formatInterval(now, this.#until, units);
+            timeRemaining = formatInterval(now, this.#until, this.#units);
         }
 
-        for (const unit of Object.keys(units)) {
-            if (units[unit]) {
-                this.#updateUnit(units[unit], timeRemaining[unit]);
+        this.#updateUnits(timeRemaining);
+    }
+
+    #updateUnits(timeRemaining) {
+        for (const unit of Object.keys(this.#units)) {
+            const { el, padZeros } = this.#units[unit];
+            const newVal = timeRemaining[unit].toString().padStart(padZeros, '0');
+
+            if (newVal != el.textContent) {
+                el.textContent = newVal;
             }
         }
-    }
-
-    #updateUnit(el, val) {
-        const pad = +el.getAttribute('pad-zeros');
-        const newVal = val.toString().padStart(pad, '0');
-
-        if (newVal != el.textContent) {
-            el.textContent = newVal;
-        }
-    }
-
-    #getUnits() {
-        return {
-            years: this.querySelector(`${this.#prefix}-years`),
-            months: this.querySelector(`${this.#prefix}-months`),
-            weeks: this.querySelector(`${this.#prefix}-weeks`),
-            days: this.querySelector(`${this.#prefix}-days`),
-            hours: this.querySelector(`${this.#prefix}-hours`),
-            minutes: this.querySelector(`${this.#prefix}-minutes`),
-            seconds: this.querySelector(`${this.#prefix}-seconds`),
-        };
     }
 
     #finish() {
