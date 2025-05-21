@@ -134,14 +134,10 @@ describe('CountdownTimer', () => {
         expect(clearInterval).toHaveBeenCalledTimes(1);
     });
 
-    test('should log an error if "until" attribute is missing', () => {
-        const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
+    test('should throw an error if "until" attribute is missing', () => {
         const element = document.createElement('countdown-timer');
-        container.appendChild(element); // Triggers connectedCallback
-
-        expect(consoleSpy).toHaveBeenCalledWith('countdown-timer requires a valid "until" attribute.');
-
-        consoleSpy.mockRestore();
+        // Appending the element triggers connectedCallback
+        expect(() => container.appendChild(element)).toThrow('countdown-timer requires a valid "until" attribute.');
     });
 
     test('should update countdown when "until" attribute changes', () => {

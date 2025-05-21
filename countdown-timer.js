@@ -23,9 +23,7 @@ export default class CountdownTimer extends HTMLElement {
 
     connectedCallback() {
         if (!this.#untilDate) {
-            console.error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
-
-            return;
+            throw new Error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
         }
 
         this.#updateTimer();
@@ -45,7 +43,7 @@ export default class CountdownTimer extends HTMLElement {
                 this.#startTimer();
             } else {
                 this.#stopTimer();
-                console.error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
+                throw new Error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
             }
         }
     }
