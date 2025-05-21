@@ -2,6 +2,14 @@
 
 This project provides a simple custom HTML element `<countdown-timer>` that displays a countdown to a specified date.
 
+## Installation
+
+Download the minified script from [dist/countdown.min.js](dist/countdown.min.js) and include it in your HTML file:
+
+```html
+<script src="path/to/your/dist/countdown.min.js" async></script>
+```
+
 ## Usage
 
 The `<countdown-timer>` element requires an `until` attribute specifying the target date in a format parseable by the JavaScript `Date` constructor (e.g., `YYYY-MM-DD`, `YYYY-MM-DDTHH:mm:ss`).
@@ -35,7 +43,7 @@ You can also add the `pad-zeros` attribute to any of the unit elements to specif
 </countdown-timer>
 ```
 
-A more complete example can be found in `demo/index.html`.
+A more complete example can be found in [demo/index.html](demo/index.html).
 
 ## Building
 
