@@ -26,7 +26,7 @@ export default class CountdownTimer extends HTMLElement {
             throw new Error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
         }
 
-        this.#updateTimer();
+        this.#update();
         this.#startTimer();
     }
 
@@ -39,7 +39,7 @@ export default class CountdownTimer extends HTMLElement {
             this.#until = parseDate(newValue);
 
             if (this.#until) {
-                this.#updateTimer();
+                this.#update();
                 this.#startTimer();
             } else {
                 this.#stopTimer();
@@ -50,7 +50,7 @@ export default class CountdownTimer extends HTMLElement {
 
     #startTimer() {
         if (!this.#timerInterval) {
-            this.#timerInterval = setInterval(() => this.#updateTimer(), 1000);
+            this.#timerInterval = setInterval(() => this.#update(), 1000);
         }
     }
 
@@ -61,7 +61,7 @@ export default class CountdownTimer extends HTMLElement {
         }
     }
 
-    #updateTimer() {
+    #update() {
         const now = new Date();
         const units = this.#getUnits();
 
