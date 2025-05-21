@@ -76,7 +76,7 @@ export default class CountdownTimer extends HTMLElement {
         };
 
         if (now >= this.#until) {
-            this.#stopTimer();
+            this.#finish();
         } else {
             timeRemaining = formatInterval(now, this.#until, units);
         }
@@ -107,5 +107,10 @@ export default class CountdownTimer extends HTMLElement {
             minutes: this.querySelector(`${this.#prefix}-minutes`),
             seconds: this.querySelector(`${this.#prefix}-seconds`),
         };
+    }
+
+    #finish() {
+        this.#stopTimer();
+        this.setAttribute('finished', '');
     }
 }

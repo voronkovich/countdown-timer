@@ -112,6 +112,23 @@ describe('CountdownTimer', () => {
         expect(component.querySelector('countdown-seconds').textContent).toBe('0');
     });
 
+    test('should add "finished" attribute when countdown is complete', () => {
+        // 1 second from now
+        const futureDate = new Date(Date.now() + 1000);
+        const component = createComponent(futureDate.toISOString(), `
+            <countdown-seconds></countdown-seconds>
+        `);
+
+        clock.tick(0);
+        expect(component.hasAttribute('finished')).toBe(false);
+
+        clock.tick(1000);
+        expect(component.hasAttribute('finished')).toBe(true);
+
+        clock.tick(1000); // Tick past the future date
+        expect(component.hasAttribute('finished')).toBe(true);
+    });
+
     test('should stop the timer when the element is disconnected', () => {
         // 5 seconds from now
         const futureDate = new Date(Date.now() + 5000);
