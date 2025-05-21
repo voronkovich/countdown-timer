@@ -1,3 +1,10 @@
+const SECONDS_IN_YEAR = 60 * 60 * 24 * 365;
+const SECONDS_IN_MONTH = 60 * 60 * 24 * 30;
+const SECONDS_IN_WEEK = 60 * 60 * 24 * 7;
+const SECONDS_IN_DAY = 60 * 60 * 24;
+const SECONDS_IN_HOUR = 60 * 60;
+const SECONDS_IN_MINUTE = 60;
+
 /**
  * Calculates the time interval between two dates and formats it based on the specified units.
  * Note: Uses approximate values for months (30 days) and years (365 days).
@@ -19,45 +26,36 @@ export function formatInterval(startDate, endDate, format) {
 
     const totalMilliseconds = Math.abs(endDate.getTime() - startDate.getTime());
 
-    // Approximate seconds in a year (using 365 days for simplicity)
-    const secondsInYear = 60 * 60 * 24 * 365;
-    // Approximate seconds in a month (using 30 days for simplicity)
-    const secondsInMonth = 60 * 60 * 24 * 30;
-    const secondsInWeek = 60 * 60 * 24 * 7;
-    const secondsInDay = 60 * 60 * 24;
-    const secondsInHour = 60 * 60;
-    const secondsInMinute = 60;
-
     let remainingSeconds = Math.floor(totalMilliseconds / 1000);
 
     if (format.years) {
-        result.years = Math.floor(remainingSeconds / secondsInYear);
-        remainingSeconds %= secondsInYear;
+        result.years = Math.floor(remainingSeconds / SECONDS_IN_YEAR);
+        remainingSeconds %= SECONDS_IN_YEAR;
     }
 
     if (format.months) {
-        result.months = Math.floor(remainingSeconds / secondsInMonth);
-        remainingSeconds %= secondsInMonth;
+        result.months = Math.floor(remainingSeconds / SECONDS_IN_MONTH);
+        remainingSeconds %= SECONDS_IN_MONTH;
     }
 
     if (format.weeks) {
-        result.weeks = Math.floor(remainingSeconds / secondsInWeek);
-        remainingSeconds %= secondsInWeek;
+        result.weeks = Math.floor(remainingSeconds / SECONDS_IN_WEEK);
+        remainingSeconds %= SECONDS_IN_WEEK;
     }
 
     if (format.days) {
-        result.days = Math.floor(remainingSeconds / secondsInDay);
-        remainingSeconds %= secondsInDay;
+        result.days = Math.floor(remainingSeconds / SECONDS_IN_DAY);
+        remainingSeconds %= SECONDS_IN_DAY;
     }
 
     if (format.hours) {
-        result.hours = Math.floor(remainingSeconds / secondsInHour);
-        remainingSeconds %= secondsInHour;
+        result.hours = Math.floor(remainingSeconds / SECONDS_IN_HOUR);
+        remainingSeconds %= SECONDS_IN_HOUR;
     }
 
     if (format.minutes) {
-        result.minutes = Math.floor(remainingSeconds / secondsInMinute);
-        remainingSeconds %= secondsInMinute;
+        result.minutes = Math.floor(remainingSeconds / SECONDS_IN_MINUTE);
+        remainingSeconds %= SECONDS_IN_MINUTE;
     }
 
     if (format.seconds) {
