@@ -143,4 +143,31 @@ describe('CountdownTimer', () => {
 
         consoleSpy.mockRestore();
     });
+
+    test('should update countdown when "until" attribute changes', () => {
+        // Initial date: 5 seconds from now
+        const initialDate = new Date(Date.now() + 5000);
+        const component = createComponent(initialDate.toISOString(), `
+            <countdown-seconds></countdown-seconds>
+        `);
+
+        clock.tick(0);
+        expect(component.querySelector('countdown-seconds').textContent).toBe('5');
+
+        // Advance time by 2 seconds
+        clock.tick(2000);
+        expect(component.querySelector('countdown-seconds').textContent).toBe('3');
+
+        // Change the "until" attribute to 10 seconds from the current time (which is 2 seconds after initialDate)
+        const newDate = new Date(Date.now() + 10000);
+        component.setAttribute('until', newDate.toISOString());
+
+        // After changing the attribute, the timer should restart and show the new remaining time
+        clock.tick(0); // Tick to process the attribute change and initial update
+        expect(component.querySelector('countdown-seconds').textContent).toBe('10');
+
+        // Advance time by 1 second
+        clock.tick(1000);
+        expect(component.querySelector('countdown-seconds').textContent).toBe('9');
+    });
 });

@@ -6,6 +6,10 @@ export default class CountdownTimer extends HTMLElement {
         customElements.define(tagName, this);
     }
 
+    static get observedAttributes() {
+        return ['until'];
+    }
+
     #untilDate = null;
     #prefix = 'countdown';
     #timerInterval = null;
@@ -17,27 +21,39 @@ export default class CountdownTimer extends HTMLElement {
         this.#prefix = this.tagName.toLowerCase().slice(0, -6);
     }
 
-    getUntilDate() {
-        return parseDate(this.getAttribute('until'));
-    }
-
     connectedCallback() {
-        this.#untilDate = this.getUntilDate();
-        if (this.#untilDate) {
-            this.#startTimer();
-        } else {
+        if (!this.#untilDate) {
             console.error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
+
+            return;
         }
+
+        this.#updateTimer();
+        this.#startTimer();
     }
 
     disconnectedCallback() {
         this.#stopTimer();
     }
 
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (name === 'until') {
+            this.#untilDate = parseDate(newValue);
+
+            if (this.#untilDate) {
+                this.#updateTimer();
+                this.#startTimer();
+            } else {
+                this.#stopTimer();
+                console.error(`${this.tagName.toLowerCase()} requires a valid "until" attribute.`);
+            }
+        }
+    }
+
     #startTimer() {
-        this.#updateTimer();
-        this.#stopTimer();
-        this.#timerInterval = setInterval(() => this.#updateTimer(), 1000);
+        if (!this.#timerInterval) {
+            this.#timerInterval = setInterval(() => this.#updateTimer(), 1000);
+        }
     }
 
     #stopTimer() {
