@@ -93,7 +93,7 @@ export default class CountdownTimer extends HTMLElement {
         const newVal = val.toString().padStart(pad, '0');
 
         if (newVal != el.textContent) {
-            el.textContent = val.toString().padStart(pad, '0');
+            el.textContent = newVal;
         }
     }
 
