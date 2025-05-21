@@ -5,7 +5,7 @@
     "main": "countdown-timer.js",
     "scripts": {
         "test": "bun test",
-        "build": "bun build --outfile=build/countdown.min.js --target=browser --format=iife --minify index.js"
+        "build": "bun build --outfile=dist/countdown.min.js --target=browser --format=iife --minify index.js"
     },
     "keywords": [
         "web-component",

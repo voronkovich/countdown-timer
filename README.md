@@ -39,10 +39,10 @@ A more complete example can be found in `demo/index.html`.
 
 ## Building
 
-The project uses [Bun](https://bun.sh/) for building. To build the minified JavaScript file (`build/countdown.min.js`), run:
+The project uses [Bun](https://bun.sh/) for building. To build the minified JavaScript file (`dist/countdown.min.js`), run:
 
 ```bash
-bun build index.js --outfile build/countdown.min.js --minify
+bun run build
 ```
 
 ## Development
