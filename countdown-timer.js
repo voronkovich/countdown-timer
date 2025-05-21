@@ -82,12 +82,18 @@ export default class CountdownTimer extends HTMLElement {
         }
 
         for (const unit of Object.keys(units)) {
-            const el = units[unit];
-            if (el) {
-                const value = timeRemaining[unit];
-                const pad = +el.getAttribute('pad-zeros');
-                el.textContent = value.toString().padStart(pad, '0');
+            if (units[unit]) {
+                this.#updateUnit(units[unit], timeRemaining[unit]);
             }
+        }
+    }
+
+    #updateUnit(el, val) {
+        const pad = +el.getAttribute('pad-zeros');
+        const newVal = val.toString().padStart(pad, '0');
+
+        if (newVal != el.textContent) {
+            el.textContent = val.toString().padStart(pad, '0');
         }
     }
 
