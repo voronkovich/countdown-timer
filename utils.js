@@ -1,3 +1,19 @@
+/**
+ * Calculates the time interval between two dates and formats it based on the specified units.
+ * Note: Uses approximate values for months (30 days) and years (365 days).
+ *
+ * @param {Date} startDate - The starting date.
+ * @param {Date} endDate - The ending date.
+ * @param {object} format - An object specifying which units to include (e.g., { years: true, days: true }).
+ * @param {boolean} [format.years] - Include years in the result.
+ * @param {boolean} [format.months] - Include months in the result (approximate).
+ * @param {boolean} [format.weeks] - Include weeks in the result.
+ * @param {boolean} [format.days] - Include days in the result.
+ * @param {boolean} [format.hours] - Include hours in the result.
+ * @param {boolean} [format.minutes] - Include minutes in the result.
+ * @param {boolean} [format.seconds] - Include seconds in the result.
+ * @returns {object} An object containing the calculated interval components.
+ */
 export function formatInterval(startDate, endDate, format) {
     const result = {};
 
@@ -51,6 +67,12 @@ export function formatInterval(startDate, endDate, format) {
     return result;
 }
 
+/**
+ * Parses a date string into a Date object.
+ *
+ * @param {string} dateStr - The date string to parse.
+ * @returns {Date|null} A Date object if parsing is successful, otherwise null.
+ */
 export function parseDate(dateStr) {
     if (!dateStr) {
         return null;
