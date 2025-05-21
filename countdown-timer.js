@@ -1,6 +1,10 @@
 import { formatInterval, parseDate } from './utils.js';
 
 export default class CountdownTimer extends HTMLElement {
+    #prefix = 'countdown';
+    #until = null;
+    #timerInterval = null;
+
     static define(prefix = 'countdown') {
         const tagName = `${prefix}-timer`;
         customElements.define(tagName, this);
@@ -9,10 +13,6 @@ export default class CountdownTimer extends HTMLElement {
     static get observedAttributes() {
         return ['until'];
     }
-
-    #prefix = 'countdown';
-    #until = null;
-    #timerInterval = null;
 
     constructor() {
         super();
