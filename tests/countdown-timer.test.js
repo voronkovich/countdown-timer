@@ -1,4 +1,4 @@
-import CountdownTimer from '../countdown-timer.js';
+import CountdownTimer from '../src/countdown-timer.js';
 import { install } from "@sinonjs/fake-timers";
 
 describe('CountdownTimer', () => {
