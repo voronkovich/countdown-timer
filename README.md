@@ -1,6 +1,8 @@
-# Countdown Timer Custom Element
+# Countdown Timer
 
 This project provides a simple custom HTML element `<countdown-timer>` that displays a countdown to a specified date.
+
+Demo: https://voronkovich.github.io/countdown-timer/demo/
 
 ## Installation
 
