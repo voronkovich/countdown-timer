@@ -28,6 +28,18 @@ These unit elements will have their text content updated automatically with the 
 
 You can also add the `pad-zeros` attribute to any of the unit elements to specify the minimum number of digits to display, padding with leading zeros if necessary.
 
+### Handling Completion
+
+When the countdown reaches zero, the `<countdown-timer>` element will automatically add a `finished` attribute. You can use this attribute in CSS or JavaScript to apply styles or take actions when the countdown completes.
+
+For example, you can use CSS to change the appearance of the timer when it finishes:
+
+```css
+countdown-timer[finished] {
+    opacity: 0.5;
+}
+```
+
 ## Example
 
 ```html
