@@ -1,11 +1,11 @@
 {
-    "name": "countdown-timer",
-    "version": "1.0.0",
+    "name": "@voronkovich/countdown-timer",
+    "version": "0.0.1",
     "description": "A simple web component for a countdown timer",
-    "main": "countdown-timer.js",
+    "main": "src/index.js",
     "scripts": {
         "test": "bun test",
-        "build": "bun build --outfile=dist/countdown.min.js --target=browser --format=iife --minify index.js"
+        "build": "bun build --outfile=dist/countdown.min.js --target=browser --format=iife --minify src/index.js"
     },
     "keywords": [
         "web-component",
