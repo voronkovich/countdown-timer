@@ -4,6 +4,6 @@ Makefile
 _config.yml
 demo/
 dist/
-jest.config.json
+happydom.ts
 node_modules/
 tests/
