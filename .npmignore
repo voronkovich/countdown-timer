@@ -1,0 +1,9 @@
+.*
+.github/
+Makefile
+_config.yml
+demo/
+dist/
+jest.config.json
+node_modules/
+tests/
