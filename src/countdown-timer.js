@@ -1,7 +1,6 @@
 import { formatInterval, parseDate } from './utils.js';
 
 export default class CountdownTimer extends HTMLElement {
-    #prefix = 'countdown';
     #until = null;
     #units = null;
     #timerInterval = null;
@@ -13,9 +12,6 @@ export default class CountdownTimer extends HTMLElement {
 
     constructor() {
         super();
-
-        // Derive prefix by removing the '-timer' suffix from the element's tag name
-        this.#prefix = this.tagName.toLowerCase().slice(0, -6);
     }
 
     connectedCallback() {
@@ -29,9 +25,11 @@ export default class CountdownTimer extends HTMLElement {
 
         if (!this.#units) {
             this.#units = Object.create(null);
+            // Derive prefix by removing the '-timer' suffix from the element's tag name
+            const prefix = this.tagName.toLowerCase().slice(0, -6);
 
             for (const unit of ['years', 'months', 'weeks', 'days', 'hours', 'minutes', 'seconds']) {
-                const el = this.querySelector(`${this.#prefix}-${unit}`);
+                const el = this.querySelector(`${prefix}-${unit}`);
                 if (el) {
                     this.#units[unit] = {
                         el: el,
