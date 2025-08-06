@@ -1,6 +1,6 @@
 {
     "name": "@voronkovich/countdown-timer",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "A simple web component for a countdown timer",
     "main": "src/index.js",
     "scripts": {
