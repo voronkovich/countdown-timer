@@ -112,7 +112,7 @@ describe('CountdownTimer', () => {
         expect(component.querySelector('countdown-seconds').textContent).toBe('0');
     });
 
-    test('should add "finished" attribute when countdown is complete', () => {
+    test('should add "finished" attribute to the main component when countdown is complete', () => {
         // 1 second from now
         const futureDate = new Date(Date.now() + 1000);
         const component = createComponent(futureDate.toISOString(), `
@@ -129,6 +129,46 @@ describe('CountdownTimer', () => {
         expect(component.hasAttribute('finished')).toBe(true);
     });
 
+    test('should add "finished" attribute to individual units when their value reaches zero', () => {
+        // 1 day, 2 hours, 3 minutes, 4 seconds from now
+        const futureDate = new Date(Date.now() + 1000 * (60 * 60 * 24 * 1 + 60 * 60 * 2 + 60 * 3 + 4));
+        const component = createComponent(futureDate.toISOString(), `
+            <countdown-days></countdown-days>
+            <countdown-hours></countdown-hours>
+            <countdown-minutes></countdown-minutes>
+            <countdown-seconds></countdown-seconds>
+        `);
+
+        clock.tick(0);
+        expect(component.querySelector('countdown-days').hasAttribute('finished')).toBe(false);
+        expect(component.querySelector('countdown-hours').hasAttribute('finished')).toBe(false);
+        expect(component.querySelector('countdown-minutes').hasAttribute('finished')).toBe(false);
+        expect(component.querySelector('countdown-seconds').hasAttribute('finished')).toBe(false);
+
+        // Advance time to make days zero
+        clock.tick(1000 * 3 * 60 * 60); // 3 hours
+        expect(component.querySelector('countdown-days').textContent).toBe('0');
+        expect(component.querySelector('countdown-days').hasAttribute('finished')).toBe(true);
+        expect(component.querySelector('countdown-hours').hasAttribute('finished')).toBe(false);
+
+        // Advance time to make hours zero
+        clock.tick(1000 * (22 * 60 * 60 + 30 * 60)); // 22 hours 30 minutes
+        expect(component.querySelector('countdown-hours').textContent).toBe('0');
+        expect(component.querySelector('countdown-hours').hasAttribute('finished')).toBe(true);
+        expect(component.querySelector('countdown-minutes').hasAttribute('finished')).toBe(false); // Hours should not be finished yet
+
+        // Advance time to make minutes zero
+        clock.tick(1000 * 33 * 60); // 33 minutes
+        expect(component.querySelector('countdown-minutes').textContent).toBe('0');
+        expect(component.querySelector('countdown-minutes').hasAttribute('finished')).toBe(true);
+        expect(component.querySelector('countdown-seconds').hasAttribute('finished')).toBe(false); // Minutes should not be finished yet
+
+        // Advance time to make seconds zero
+        clock.tick(1000 * 5); // 5 minutes
+        expect(component.querySelector('countdown-seconds').textContent).toBe('0');
+        expect(component.querySelector('countdown-seconds').hasAttribute('finished')).toBe(true);
+    });
+
     test('should stop the timer when the element is disconnected', () => {
         // 5 seconds from now
         const futureDate = new Date(Date.now() + 5000);
@@ -136,16 +176,16 @@ describe('CountdownTimer', () => {
             <countdown-seconds></countdown-seconds>
         `);
 
-        // Advance timers to start the interval
-        clock.tick(1000);
-        expect(component.querySelector('countdown-seconds').textContent).toBe('4');
+        // Initial state
+        clock.tick(0);
+        expect(component.querySelector('countdown-seconds').textContent).toBe('5');
 
         // Disconnect the element
         component.remove();
 
         // Advance timers further - the value should not change
         clock.tick(2000);
-        expect(component.querySelector('countdown-seconds').textContent).toBe('4');
+        expect(component.querySelector('countdown-seconds').textContent).toBe('5');
 
         // Check that clearInterval was called
         expect(clearInterval).toHaveBeenCalledTimes(1);

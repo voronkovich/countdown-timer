@@ -50,6 +50,8 @@ You can also add the `pad-zeros` attribute to any of the unit elements to specif
 
 When the countdown reaches zero, the `<countdown-timer>` element will automatically add a `finished` attribute. You can use this attribute in CSS or JavaScript to apply styles or take actions when the countdown completes.
 
+Additionally, individual unit elements (e.g., `<countdown-days>`, `<countdown-hours>`) will also receive the `finished` attribute when their specific time unit reaches zero.
+
 For example, you can use CSS to change the appearance of the timer when it finishes:
 
 ```css
